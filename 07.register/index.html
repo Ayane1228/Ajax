@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+
+<head>
+    <title>注册用户</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="./css/init.css" />
+    <link rel="stylesheet" type="text/css" href="./css/register.css" />
+    <style>
+        .sub.disabled {
+            /* background-color: gray !important; */
+            background: gray !important;
+            cursor: not-allowed !important;
+        }
+
+        .cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/loading.gif') no-repeat center, gray;
+            opacity: .7;
+            display: none;
+        }
+
+        .tips {
+            position: absolute;
+            font-size: 20px;
+            transform: translateY(-10px);
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="bg"><img src="./Images/wallpaper.jpg" /></div>
+    <div id="register">
+        <div class="logo"><a href="./index.html"></a></div>
+        <div class="box">
+            <div class="regform">
+                <h2>工具函数实现版本</h2>
+                <form action="" method="post">
+                    <table>
+                        <tr>
+                            <td>用户名:</td>
+                            <td><input class='inputName' type="text" name="" value="" /></td>
+                            <td>
+                                <span class='tips' >占位文本</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" align="center"><input type="button" class="sub disabled" value="注 册" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="quickreg">
+                <h2>快速注册</h2>
+                <div class="apps">
+                    <a class="qq" href="javascript:void(0)"></a>
+                    <a class="sina" href="javascript:void(0)"></a>
+                    <a class="taobao" href="javascript:void(0)"></a>
+                    <a class="tent" href="javascript:void(0)"></a>
+                    <a class="douban" href="javascript:void(0)"></a>
+                </div>
+                <div class="nowlog"><a href="./login.html">已有账号，现在去登陆！</a></div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+    <div id="footer">
+        <div class="copy">
+            <p>网站开发测试中...</p>
+            <p>版权所有 爱旅行 www.ailvxing.cc</p>
+        </div>
+    </div>
+    <div class="cover"></div>
+</body>
+
+</html>
+<!--  调用 工具函数  -->
+<script src="./js/ajax.js"></script>
+<script src="./js/jquery-1.12.4.min.js"></script>
+
+<!--  
+    需求们
+        需求1
+            失去焦点
+                开启遮罩层 -- cover
+                --ajax验证用户名 
+                    文本框--inputName
+                    调用验证用户名接口
+            请求回来之后
+                关闭遮罩层
+                修改文本框之后的提示 --tips
+                延迟一会之后消失
+        需求2
+            按钮根据是否可以注册 变绿
+            可以->变绿
+            不可以->不变
+        需求3
+            点击注册按钮
+                弹出遮罩层
+                --注册--ajax--接口文档
+            请求回来之后
+                关闭遮罩层
+                信息设置给 提示tips
+        需求4
+            注册按钮 不能一直点 
+            当注册按钮 有disable这个类 就不能点
+                判断类名
+                提示用户
+                阻断后续代码执行
+            反之可以点
+        需求5
+            注册成功之后
+                禁用按钮的点击
+                    添加类名
+ -->
+<script>
+    $(function(){
+        $('.inputName').blur(function(){
+            $('.cover').show();
+            ajax({
+                type:'get',
+                url:'_api/01.check.php',
+                data:'name='+$('.inputName').val(),
+                success:function(data){
+                     console.log(data);
+                     $('.cover').hide();
+                     $('.tips').html(data.message).fadeIn().delay(2000).fadeOut();
+                    // 如果可以注册删除按钮类名
+                    if(data.status == 'can'){
+                        $('.sub').removeClass('disabled');
+                        }
+                }
+            })
+        })
+    })
+</script>

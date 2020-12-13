@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style type="text/css">
+		.item {
+			width: 640px;
+			/* height: 452px; */
+			background-color: #eee;
+			margin-top: 50px;
+			border-radius: 5px;
+			overflow: hidden;
+		}
+
+		.item .cover {
+			display: block;
+		}
+
+		.item .cover img {
+			display: block;
+		}
+
+		.item .bottom {
+			height: 35px;
+			position: relative;
+		}
+
+		.item .bottom a {
+			text-decoration: none;
+			line-height: 35px;
+			font-family: '微软雅黑';
+			margin-left: 20px;
+			color: gray;
+		}
+
+		.item .bottom .rightBox {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			height: 100%;
+		}
+
+		.item .bottom .rightBox span {
+			line-height: 35px;
+			margin: 0 20px;
+			font-size: 15px;
+			/* font-family: "微软雅黑"; */
+			color: gray;
+		}
+
+		.item .bottom .rightBox span::before {
+			margin-right: 10px;
+			color: #dd5a64;
+		}
+
+		.getMore {
+			width: 100px;
+			height: 100px;
+			border: none;
+			background-color: skyblue;
+			position: fixed;
+			right: 100px;
+			top: 50%;
+			margin-top: -50px;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+</head>
+
+<body>
+	<input type="button" value="加载更多" class='getMore'>
+	<div class="container">
+		<div class="item">
+			<a href="#" class='cover'><img src="images/vol.859.jpg" alt=""></a>
+			<div class="bottom">
+				<a href="#">vol.847 用一首歌来想象你</a>
+				<div class='rightBox'>
+					<span class='icon-heart'>18554</span>
+					<span class='icon-comment'>292</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

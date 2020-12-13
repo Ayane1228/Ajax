@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<!-- 导入模板引擎 -->
+<script src="./js/template-web.js"></script>
+<!-- 逻辑语句 条件 -->
+<script id='ifTemplate' type="text/html">
+  <ul>
+    {{if male=='女'}}
+    <li>欢迎您 {{name}} 女士
+      <ol>
+        <li>这是最新款的包包</li>
+        <li>这是最新款的口红</li>
+        <li>没想到,你竟然是{{skill}}</li>
+      </ol>
+    </li>
+    {{else if male=='男'}}
+      <li>欢迎您 {{name}} 先生
+        <ol>
+          <li>这是最新款的拖拉机</li>
+          <li>讨厌,才来找人家</li>
+          <li>没想到,你竟然稍长{{skill}}</li>
+        </ol>
+      </li>
+    {{/if}}
+  </ul>
+</script>
+<script>
+  var person1 = {
+    male: '女',
+    name: '郑爽',
+    skill: '身材好'
+  };
+  var person2 = {
+    male: '男',
+    name: '张翰',
+    skill: '这篇鱼塘我承包了'
+  };
+  console.log(template('ifTemplate', person1));
+  console.log(template('ifTemplate', person2));
+</script>
+<!-- 原文输出 -->
+<script id='norTemplate' type="text/html">
+  <ul>
+    <li>{{name}}</li>
+    <li>{{skill}}</li>
+    <li>{{@info}}</li>
+  </ul>
+</script>
+<script>
+  var person = {
+    name:'犬夜叉',
+    skill:'变犬',
+    info:'<a href="https://baike.baidu.com/item/%E7%8A%AC%E5%A4%9C%E5%8F%89/26878?fr=aladdin">犬夜叉</a>'
+  }
+  document.body.innerHTML = template('norTemplate',person);
+
+</script>
+<!-- 循环语句 -->
+<script id='eachTemplate' type="text/html">
+  <ul>
+    <li>{{name}}</li>
+    <li>兄弟们
+        {{each brother}}
+          <li>{{$value}}</li>
+        {{/each}}
+    </li>
+    <li>家人们
+      <ol>
+        {{each family}}
+        <li>{{$value.name}}---{{$value.skill}}</li>
+        {{/each}}
+      </ol>
+    </li>
+  </ul>
+</script>
+<script>
+   var person = {
+     name:'大娃',
+     brother:[
+       '二娃',
+       '三娃',
+       '水娃',
+       '火娃',
+       '千里眼娃',
+       '瓜娃子'
+     ],
+     family:[
+       {name:'爷爷',skill:'被抓'},
+       {name:'穿山甲',skill:'到底说了什么'},
+       {name:'小蝴蝶',skill:'撩--葫芦娃'}
+     ]
+   }
+
+   console.log(template('eachTemplate',person));
+
+</script>

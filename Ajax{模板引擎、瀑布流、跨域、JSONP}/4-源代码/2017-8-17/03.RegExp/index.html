@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+
+<body>
+  <h2>正则表达式</h2>
+  <p>
+    工作时 如果有对于字符串的 检索
+      想到正则表达式 看语法
+        手机号验证
+        邮箱验证
+        百度一搜一大把
+  </p>
+</body>
+
+</html>
+<script>
+  var str = '我是一匹来自{{place}}的西兰花,我生长在无垠的{{hometown}}中';
+
+  // 定义正则
+  // {{开头  字母\w 最起码1个+  }}结尾
+  // 提供了一个 再次检索的功能 语法是 想要再次检索的内容 用 小括号包起来
+  var reg = /{{(\w+)}}/;
+  console.log(reg.test(str));
+
+  console.log(reg.exec(str));
+
+  // 定义对象 对象的属性名 跟 坑的 名字一样
+  var data = {
+    place:'南方',
+    hometown:'景德镇'
+  }
+  
+  // 写死  {{place}}
+  str = str.replace('{{place}}', data['place']);
+
+  console.log(reg.exec(str));
+  str = str.replace('{{hometown}}', data.hometown);
+  
+</script>

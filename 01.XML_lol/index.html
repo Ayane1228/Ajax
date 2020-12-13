@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>获取xml数据并解析</h1>
+    <input type="button" value="获取XML数据">
+
+    <script>
+        // 获取 XML数据并解析
+        document.querySelector('input').onclick = function(){
+            // 创建异步对象
+            var xhr = new XMLHttpRequest;
+            // 设置请求行
+            xhr.open('get','getHeros.php');
+            // 设置请求头
+            // 回调函数
+            xhr.onreadystatechange  = function(){
+                if(xhr.readyState == 4&&xhr.status==200){
+                    var allHero = xhr.responseXML.querySelectorAll('hero');
+                    // 创建ul
+                    var ulDom = document.createElement('ul');
+                    // ul放到body中
+                    document.body.appendChild(ulDom);
+                    //  通过循环遍历出每个hero标签
+                    for(let i=0;i<allHero.length;i++){
+                        let currentHero = allHero[i];
+                        var icon = currentHero.querySelector('icon').innerHTML;
+                        var name = currentHero.querySelector('name').innerHTML;
+                        //  创建li标签
+                        var liDom = document.createElement('li');
+                        liDom.innerHTML = '<img src="'+icon+'">-------<span>'+name+'</span>'
+                        // li加到ul中
+                        ulDom.appendChild(liDom);
+                    }
+                }
+            }
+            xhr.send(null); 
+
+        }
+    </script>
+</body>
+</html>

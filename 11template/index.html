@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script src="./template-web.js"></script>
+<script type="text/html" id='template'>
+    <ul>
+        <li>名字{{name}}</li>
+        <li>技能{{skill}}</li>
+        <li>爱好{{habbit}}</li>
+    </ul>
+</script>
+<script>
+    var data = {
+        name:'晚上',
+        skill:'睡觉',
+        habbit:'早点'
+    };
+    var result = template('template',data);
+     console.log(result);
+     document.body.innerHTML = result;
+</script>

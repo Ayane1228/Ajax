@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+   <!-- dom元素的 src属性 是支持 跨域获取资源的 -->
+   <img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png" alt="">
+
+   <!--  还有 那些元素 有src属性 -->
+   <!-- JSONP 就是利用了 src属性 支持跨域获取资源 -->
+   <!-- <script src='http://192.168.70.78/2017-8-17/12.JSONP/backData.js'></script> -->
+
+   <!-- JSONP的真实用法 -->
+   <script>
+       function doSomething(data){
+         console.log(data);
+       }
+   </script>
+   <script  src="http://192.168.70.78/2017-8-17/12.JSONP/backData.php?callback=doSomething">
+
+      doSomething({"name":"jack","food":"西兰花"})
+   </script>
+</body>
+</html>

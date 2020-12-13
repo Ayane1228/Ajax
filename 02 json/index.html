@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // json 表示对象
+    var jsonobject = '{"name":"冰冰","skill":"大"}';
+     console.log(jsonobject);
+    //  转为json对象
+    var obj = JSON.parse(jsonobject);
+     console.log(obj.name +'|' + obj.sill);
+    //  数组
+    var jsonArr = '["大","小","平","超大"]';
+     console.log(jsonArr);
+     var arr = JSON.parse(jsonArr);
+      console.log(arr);
+    // 数组对象
+    var objectArr = '{"name":"mimi","skill"::["da","yue"]}';
+     console.log(objectArr);
+     var oa = JSON.parse(objectArr);
+      console.log(oa);
+</script>

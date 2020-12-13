@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>落网</title>
+
+	<style type="text/css">
+		.item {
+			width: 640px;
+			/* height: 452px; */
+			background-color: #eee;
+			margin-top: 50px;
+			border-radius: 5px;
+			overflow: hidden;
+		}
+
+		.item .cover {
+			display: block;
+		}
+
+		.item .cover img {
+			display: block;
+		}
+
+		.item .bottom {
+			height: 35px;
+			position: relative;
+		}
+
+		.item .bottom a {
+			text-decoration: none;
+			line-height: 35px;
+			font-family: '微软雅黑';
+			margin-left: 20px;
+			color: gray;
+		}
+
+		.item .bottom .rightBox {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			height: 100%;
+		}
+
+		.item .bottom .rightBox span {
+			line-height: 35px;
+			margin: 0 20px;
+			font-size: 15px;
+			/* font-family: "微软雅黑"; */
+			color: gray;
+		}
+
+		.item .bottom .rightBox span::before {
+			margin-right: 10px;
+			color: #dd5a64;
+		}
+
+		.left-control {
+			position: fixed;
+			right: 100px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		#getMore {
+			width: 100px;
+			height: 100px;
+			border: none;
+			text-align: center;
+			line-height: 100px;
+			cursor: pointer;
+		}
+
+		#getSome {
+			width: 100px;
+			height: 100px;
+			border: none;
+			text-align: center;
+			line-height: 100px;
+			cursor: pointer;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+</head>
+
+<body>
+	<div class="left-control">
+		<h2>加载一张</h2>
+		<div id='getMore' class="icon-download icon-4x"></div>
+		<!--<div id='getMore' class="icon-spinner icon-spin icon-4x"></div>-->
+		<h2>加载多张</h2>
+		<div id='getSome' class="icon-download icon-4x"></div>
+	</div>
+	<div class="container">
+		<div class="item">
+			<a href="#" class='cover'><img src="images/vol.859.jpg" alt=""></a>
+			<div class="bottom">
+				<a href="#">vol.847 用一首歌来想象你</a>
+				<div class='rightBox'>
+					<span class='icon-heart'>18554</span>
+					<span class='icon-comment'>292</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<!-- 1.使用jQuery 发送ajax请求 -->
+<script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
+<!--
+		步骤
+			0.导入模板引擎
+			1.定义模板
+			2.挖坑 起名字
+				挖坑 一般是取决于 数据
+			3.填坑
+				数据 服务器 ajax
+				回调函数
+			4.使用
+	-->
+<!--  导入模板引擎  -->
+<script src='./js/template-web.js'></script>
+<!-- 定义模板  -->
+<script type='text/html' id='template'>
+	<div class="item">
+				<a href="#" class="cover"><img src="{{path}}" alt=""></a>
+				<div class="bottom">
+					<a href="#">{{name}}</a>
+					<div class="rightBox">
+						<span class="icon-heart">{{star}}</span>
+						<span class="icon-comment">{{message}}</span>
+					</div>
+			</div>
+	</div>
+</script>
+
+<script>
+	// 获取数据
+	$(function(){
+		$('#getMore').click(function(){
+			$.ajax({
+				url:'./_api/luowang.php',
+				data:{
+					index:3
+				},
+				success:function(data){
+					 var result = template('template',data.item);
+					  $('.container').append(result);
+				}
+			})
+		});
+		$('#getSome').click(function(){
+			$.ajax({
+				url:'./_api/luowang_getSome.php',
+				data:{
+					num:Math.floor((16*Math.random()))
+				},
+				success:function(data){
+					 for(var i=0;i<data.items.length;i++){
+						 $('.container').append(template('template',data.items[i]));
+					 }
+				}
+			})
+		})
+	})
+</script>
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试Ajax函数</title>
+</head>
+<body>
+    <!-- <input type="button" value="测试get" class="get">
+    <input type="button" value="测试post" class="post"> -->
+    <input type="button" value="测试Ajax" class="ajax">
+</body>
+</html>
+<!-- 导入js -->
+<script src="./Ajax.js"></script>
+<script>
+    // // get请求
+    // document.querySelector('.get').onclick = function(){
+    //     get('./backs/backsend.php','name=jack&&friend=rose',function(data){
+    //          console.log(data);
+    //     });
+    // }
+    // // post请求
+    // document.querySelector('.post').onclick = function(){
+    //     post('./backs/backsend.php','name=rose&&friend=青椒',function(data){
+    //          alert(data);
+    //     });
+    // }
+    // Ajax请求
+    document.querySelector('.ajax').onclick = function(){
+        // url type data success
+        ajax({
+            url:'./backs/backsend.php',
+            type:'get',
+            data:'name=胡图图&&skill=隔壁老王',
+            success:function(data){
+                document.body.innerHTML = data;
+            }
+        });
+    }
+</script>

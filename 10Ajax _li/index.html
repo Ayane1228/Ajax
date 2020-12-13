@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>表单注册</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      font-family: '微软雅黑';
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      /* background-color: #F7F7F7; */
+      background: url('./resource/images/wallpaper.jpg') no-repeat center /100% 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    ul {
+      margin: 0;
+      padding: 50px;
+      padding-top: 0px;
+      list-style: none;
+    }
+
+    .register {
+      width: 800px;
+      background-color: #F9F9F9;
+      border: 1px solid #CCC;
+      border-radius: 5px;
+    }
+
+    li {
+      display: flex;
+      margin: 20px 0;
+    }
+
+    label,
+    input {
+      display: block;
+      float: left;
+      height: 46px;
+      font-size: 24px;
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    label {
+      width: 200px;
+      line-height: 46px;
+      margin-right: 30px;
+      text-align: right;
+    }
+
+    input {
+      width: 320px;
+      padding: 8px;
+      line-height: 1;
+      outline: none;
+      position: relative;
+    }
+
+    input.code {
+      width: 120px;
+    }
+
+    input.verify {
+      width: 190px;
+      margin-left: 10px;
+    }
+
+    input.disabled {
+      background-color: #CCC !important;
+      cursor: not-allowed !important;
+    }
+
+    input[type=button] {
+      border: none;
+      color: #FFF;
+      background-color: #E64145;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .tips {
+      width: 100%;
+      height: 40px;
+      text-align: center;
+    }
+
+    .tips p {
+      min-width: 300px;
+      max-width: 400px;
+      line-height: 40px;
+      margin: 0 auto;
+      color: #FFF;
+      display: none;
+      background-color: #C91623;
+    }
+
+    .submit:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+
+    span {
+      line-height: 46px;
+      padding-left: 20px;
+      font-size: 20px;
+      color: yellowgreen;
+      text-shadow: 0 0 20px yellowgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="register">
+    <div class="tips">
+      <p>用户名不能为空</p>
+    </div>
+    <form id="ajaxForm">
+      <ul>
+        <li>
+          <label for="">用户名</label>
+          <input type="text" name="name" class="name">
+        </li>
+        <li>
+          <label for="">请设置密码</label>
+          <input type="password" name="pass" class="pass">
+        </li>
+        <li>
+          <label for="">请确认密码</label>
+          <input type="password" name="repass" class="repass">
+        </li>
+        <li>
+          <label for="">验证手机</label>
+          <input type="text" name="mobile" class="mobile">
+        </li>
+        <li>
+          <label for="">短信验证码</label>
+          <input type="text" name="code" class="code">
+          <input type="button" value="获取验证码" class="verify">
+        </li>
+        <li>
+          <label for=""></label>
+          <input type="button" class="submit" value="立即注册">
+        </li>
+      </ul>
+    </form>
+  </div>
+  <!-- 提示信息 -->
+
+</body>
+
+</html>
+
+<!-- 导入jQuery  -->
+<script src="./js/jquery-1.12.4.min.js"></script>
+
+<!-- 自己的js代码  -->
+<!--
+  需求们
+    需求1
+      用户名 name 失去焦点 验证数据 
+        ajax
+          响应回来之后
+            修改页面显示 tips p
+            淡入 延迟 淡出
+    需求2
+      还可以使用正则 验证手机号
+      手机号 mobile 失去焦点 验证数据 
+        ajax
+          响应回来之后
+            修改页面显示 tips p
+            淡入 延迟 淡出
+    需求3
+      点击获取验证码
+        ajax请求
+          请求响应回来之后
+          直接填入 验证码框框
+    需求4
+      倒计时功能
+        点击获取验证码之后
+          判断是否有类名  
+            有=>禁止用户点击
+            没有=>可以点击 并且添加类名
+          倒计时 提示用户
+            倒计时结束 还原按钮的外观
+          修改 按钮的内容
+  -->
+<script>
+  $(function(){
+    // 需求一 验证用户名
+    $('.name').blur(function () {
+      var $this = $(this);
+      $.ajax({
+        url: './_api/checkName.php',
+        data: {
+          name: $this.val()
+        },
+        success: function (data) {
+          $('.tips').find('p').html(data).fadeIn(1000).delay(1000).fadeOut(1000);
+        }
+      })
+    })
+    // 需求二 验证手机号
+    $('.mobile').blur(function(){
+      $.ajax({
+        url:'./_api/checkMobile.php',
+        type:'post',
+        data:{
+          mobile:$('.mobile').val()
+        },
+        success:function (data){
+           $('.tips').find('p').html(data).fadeIn(1000).delay(1000).fadeOut(1000);
+        }
+      })
+      // 需求三  验证码
+      $('.verify').click(function(){
+        var totalTime = 60;
+        // 解决点击之后还需要等待的问题
+        $('.verify').val('还有' + totalTime + 'S');
+        // 需求四 
+        if($(this).hasClass('disabled')){
+          alert('请等待60S之后再尝试');
+          return;
+        }
+        // 倒计时
+        var interID = setInterval(function(){
+          totalTime--;
+          if(totalTime==0){
+            // 移除类名 清除定时器
+            clearInterval(interID);
+            $('.verify').removeClass('disabled');
+            $('.verify').val('获取验证码');
+            // 阻断后续执行
+            return;
+          }
+          $('.verify').val('还有' + totalTime + 'S');
+        },1000);
+        $(this).addClass('disabled');
+        $.ajax({
+          url:'./_api/code.php',
+          data:{
+            mobile:$('.mobile').val()
+          },
+          success:function(data){
+             $('.code').val(data);
+             
+          }
+        })
+      })
+    })
+  })
+</script>

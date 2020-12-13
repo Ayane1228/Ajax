@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+
+  <!-- Bootstrap -->
+  <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .lol-panel {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .col-xs-4 {
+      text-align: center;
+    }
+
+    .lol-panel .panel-body {
+      /* height: 400px; */
+      flex: 1;
+      overflow-y: scroll;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="lol-panel panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">lol_英雄_基础版本</h3>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-4">
+            <a href="javascript:void(0)" name='' class="thumbnail">
+              <img src="./api/images/1480473717181.png" alt="...">
+              <span>青钢影-卡蜜尔</span>        
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <input class='btn btn-info btn-lg getData' type="button" value='加载数据'>
+      <input class='heroNum' type="text" placeholder="请输入英雄的个数">
+    </div>
+  </div>
+
+
+  <!--  模态框  -->
+  <div class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">模板页</h4>
+        </div>
+        <div class="modal-body">
+          <div class="jumbotron">
+            <h1><span>青钢影</span>--<span class="label label-default">卡蜜尔</span></h1>
+            <img src="./api/images/1480473717181.png" alt="..." class="img-thumbnail">
+            <p>
+              tags:战士, 近战 </p>
+            <p>
+              卡蜜尔是一位优雅的特工精英，也是一台精密的人形兵器。 </p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">详细攻略</a>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+</body>
+
+</html>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="lib/js/jquery-1.12.4.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="lib/js/bootstrap.min.js"></script>
+<script>
+  $(function(){
+    $('.getData').click(function(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('get','./api/HeroInfo_List_get.php?num=' + $('.heroNum').val());
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState==4&&xhr.status==200){
+        //  解析字符串
+        var dataObj = JSON.parse(xhr.responseText);
+        // 循环遍历
+        for(var i = 0; i < dataObj.data.length; i++){
+          // 克隆Dom元素
+          var $cloneCol = $('.col-xs-4').first().clone();
+          // 给克隆的元素添加数据
+            $cloneCol.find('img').attr('src', dataObj.data[i].champion_icon);
+            $cloneCol.find('span').html(dataObj.data[i].champion_name);
+          // 添加到页面上
+          $cloneCol.appendTo('.row');
+        }
+      }
+    }
+    xhr.send(null);
+  })
+  // 给row标签中的 a标签动态绑定事件 给父元素绑定事件 由a触发
+  $('.row').on('click', 'a', function () {
+      // console.log('你点我了哦');
+      //1.创建异步对象
+      // var xhr = new XMLHttpRequest();
+      var xhr = new XMLHttpRequest();
+      //2.设置请求行
+      xhr.open('post', './api/HeroInfo_details_post.php');
+      //3.设置请求头(get请求可以省略)
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      //4.注册状态改变事件
+      xhr.onreadystatechange = function () {
+        //4.1判断状态&请求是否成功并使用数据
+        if(xhr.readyState==4&&xhr.status==200){
+          // console.log(xhr.responseText);
+          // 解析数据
+          var dataObj = JSON.parse(xhr.responseText);
+          // 修改模态框的内容
+          $('.jumbotron').find('span').first().html(dataObj.data.champion_title);
+          $('.jumbotron').find('span').last().html(dataObj.data.champion_name);
+          $('.jumbotron').find('img').attr('src',dataObj.data.champion_icon);
+          $('.jumbotron').find('p').first().html(dataObj.data.champion_tags);
+          $('.jumbotron').find('p').last().html(dataObj.data.champion_info);
+          $('.jumbotron').find('a').attr('href',dataObj.data.champion_url);
+          $('.modal').modal('show');
+         
+
+        }
+      }
+      //5.发送请求
+      xhr.send('name='+$(this).find('span').html());
+    })
+  })
+</script>

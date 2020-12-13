@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>JQuery 实现瀑布流</title>
+	<style>
+		body {
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			background-color: #F7F7F7;
+			font-family: '微软雅黑';
+		}
+
+		.wrapper {
+			padding: 50px;
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			height: 300px;
+		}
+
+		.items {
+			position: relative;
+			/* display: flex; */
+			/* 环函 */
+			/* flex-wrap: wrap; */
+		}
+
+		.item {
+			width: 228px;
+			position: absolute;
+		}
+
+		.tips {
+			width: 280px;
+			height: 40px;
+			margin: 30px auto 0;
+			text-align: center;
+			line-height: 40px;
+			background-color: #CCC;
+			border-radius: 6px;
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		.tips.loading {
+			/* background-color: transparent; */
+			background-color: hotpink;
+		}
+
+		.tips.disabled {
+			background-color: gray;
+			cursor: not-allowed;
+		}
+
+		* {
+			transition: all 1s;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>瀑布流 展示页面</h1>
+	<div class="wrapper">
+		<!-- items 作为 瀑布流的容器  瀑布流中的 元素的 宽度 是固定的 -->
+		<div class="items">
+
+		</div>
+		<p class="tips loading">正在加载...</p>
+	</div>
+</body>
+
+</html>
+<!-- jQ -->
+<script src="./js/jquery-1.12.4.min.js"></script>
+<!-- 模板引擎使用步骤
+		 1.引入模板引擎
+		 2.根据数据定义模板
+		 3.挖坑
+		 4.填坑使用
+-->
+<script src="./js/template-web.js"></script>
+<script id='template' type="text/html">
+	{{each items}}
+	<div class="item">
+		<img src="{{$value.path}}" alt="">
+		<p>{{$value.text}}</p>
+	</div>
+	{{/each}}
+</script>
+
+<!-- 引入瀑布流插件 -->
+<script src="./js/masonry.pkgd.min.js"></script>
+
+<!-- 自己的js -->
+<script>
+	$(function () {
+		// 定义页码
+		var my_currentPage = 1;
+		// 点击变....
+		$('.tips').click(function () {
+			// 添加判断类名的代码
+			if($(this).hasClass('disabled')==true){
+				alert('哥们,别点了,已经是最后一页了哦');
+				return;
+			}
+			// .
+			$(this).html('.');
+			var $this = $(this);
+			// 定时器
+			var interId = setInterval(function () {
+				var oldStr = $this.html();
+				// 判断长度
+				if (oldStr.length > 16) {
+					oldStr = '';
+				}
+				// 累加 .
+				oldStr += '.';
+				// 赋值给元素的内容
+				$this.html(oldStr);
+			}, 100)
+			// ajax获取数据
+
+			$.ajax({
+				url: 'api/waterFall.php',
+				type: 'post',
+				data: {
+					currentPage: my_currentPage,
+					pageSize: 40
+				},
+				success: function (data) {
+					console.log(data); //测试代码
+					// 清除定时器
+					clearInterval(interId);
+					// 修改内容为 1/xx
+					$('.tips').html(data.currentPage + '/' + data.totalPage);
+					// 渲染页面 -- 模板引擎
+					var result = template('template', data);
+					// console.log(result); //测试代码
+					var $dom = $(result);
+					// $('.items').append(result);
+
+					// 瀑布流
+					/*
+						通过例子查看 缺少的代码
+						通过文档 查看 方法的说明
+						复制过来测试
+						不对 检查 是不是 参数不对
+					*/
+					$('.items').masonry({
+						transitionDuration: 0
+					}).append($dom).masonry('appended', $dom).masonry();
+
+					// 页码 累加
+					my_currentPage++;
+
+					// 判断是否是最后一页
+					if(data.currentPage==data.totalPage){
+						// 添加类名
+						$('.tips').addClass('disabled');
+					}
+				}
+			})
+		})
+	})
+</script>

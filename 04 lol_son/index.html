@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .showbox{
+            margin: 50px auto;
+            width: 666px;
+            height: 666px;
+            box-shadow:0 0 30px skyblue ;
+        }
+    </style>
+</head>
+<body>
+    <h2>LOL数据解析</h2>
+    <input type="button" value="获得LOL数据">
+    <div class="showbox">
+
+    </div>
+</body>
+</html>
+<script>
+    document.querySelector('input').onclick = function(){
+        // 创建异步对象
+        var xhr = new XMLHttpRequest;
+        // 创建请求行
+        xhr.open('get','backHero.php');
+        // 设置请求头（“可省略”）
+        // 设置回调函数
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState==4&&xhr.status==200){
+                // 解析json数据
+                var heroArr = JSON.parse(xhr.responseText);
+                // 准备字符串
+                var html = "";
+                // table开头
+                html+='<table>';
+                    // 循环遍历
+                    for(var i=0;i<heroArr.length;i++){
+                        var currentHero = heroArr[i];
+                        html+='<tr>';
+                            // td
+                            html+='<td>'+currentHero.champion_name+'</td>';
+                            html+='<td>'+currentHero.champion_tags+'</td>';
+                            html+='<td><img src="'+currentHero.champion_icon+'"></td>';
+                        html+='</tr>';
+                    }
+                    // table结尾
+                html+='</table>';
+                console.log(html);
+                // 放到页面中
+                document.querySelector('.showbox').innerHTML=html;
+                }
+        }
+        // 发送请求
+        xhr.send(null);
+    }
+</script>

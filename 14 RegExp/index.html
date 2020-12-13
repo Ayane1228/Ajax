@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则表达式</title>
+</head>
+<body>
+    <h2>正则表达式</h2>
+</body>
+</html>
+<script>
+    var str = '我是一个{{place}},来自{{howntown}}';
+    // 定义正则
+    // {{开头..至少一个字母}}
+    // 在此使用正则表达式检索字符串，使用小括号包裹需要再次检索的内容
+    var reg = /{{\w+}}/;
+    var regg = /{{(\w+)}}/;
+     console.log(reg.test(str));
+      console.log(reg.exec(str));
+       console.log('再次检索' + regg.exec(str));
+      
+</script>

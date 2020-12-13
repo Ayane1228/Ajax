@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+  <input type="button" value='跨域访问'>
+</body>
+</html>
+<script>
+  document.querySelector('input').onclick = function(){
+    var xhr  = new XMLHttpRequest();
+    xhr.open('get','http://192.168.70.78/2017-8-17/11.cross/backData.php');
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState==4&&xhr.status==200){
+        console.log(xhr.responseText);
+      }
+    }
+    xhr.send(null);
+  }
+
+</script>

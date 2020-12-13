@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+  <h2>JSONP接口使用</h2>
+</body>
+</html>
+<script  src="./js/jquery-1.12.4.min.js"></script>
+<!-- 
+    同源
+        http://127.0.0.1/2017-8-17/09.waterFall_ajax/
+        http://127.0.0.1/2017-8-17/09.waterFall_ajax/api/waterFall.php
+        协议名:http
+        地址一样:
+        端口号:默认是80端口
+         上述三个条件一样 称之为 同源
+    不同源
+        协议,地址,端口号 有一个不一样 称之为不同源
+    跨域
+        不同源的网站之前 互相发送请求
+        跨域
+
+ -->
+<script>
+$(function(){
+  $("h2").click(function(){
+    $.ajax({
+      url:'https://api.asilu.com/phone/',
+      data:{
+        phone:'13666666666'
+      },
+      success:function(data){
+        console.log(data);
+      },
+      // dataType:'jsonp'
+    })
+  })
+})
+
+</script>

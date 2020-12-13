@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+
+<body>
+  <input type="button" value='获取JSON格式的数据'>
+</body>
+
+</html>
+<script>
+  // 点击时候获取
+  document.querySelector('input').onclick = function () {
+    //1.创建异步对象
+    var xhr = new XMLHttpRequest();
+    //2.设置请求行
+    xhr.open('post', 'backJSON.php');
+    //3.设置请求头(get请求可以省略)
+    //4.注册状态改变事件
+    xhr.onreadystatechange = function () {
+      //4.1判断状态&请求是否成功并使用数据
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        // JSON的载体是字符串 用responseText 即可获取
+        console.log(xhr.responseText);
+        // 转化为 对应的 对象(数组)
+        var arr = JSON.parse(xhr.responseText);
+        console.log(arr);
+        // 遍历打印
+        for(var i =0;i<arr.length;i++){
+          var currentObj = arr[i];
+          console.log('姓名:'+currentObj.name+'  技能:'+currentObj.skill);
+        }
+      }
+    }
+    //5.发送请求
+    xhr.send(null);
+  }
+</script>

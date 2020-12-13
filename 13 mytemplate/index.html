@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的模板引擎</title>
+</head>
+<body>
+    <!-- 
+        通过id获取模板中的内容=>（结构是）字符串
+        调用方法时
+        找到字符串中的特殊符号{{name}}。。。。
+        使用对象对应的属性进行替换
+      -->
+</body>
+</html>
+<script id="template" type="text/html">
+    <ul>
+        <li>{{name}}</li>
+        <li>{{age}}</li>
+    </ul>
+</script>
+<script src="./template.js"></script>
+<script>
+    // // 模板引擎 template('id','data')
+    // // 通过id获得内容
+    // var str=document.querySelector('#template').innerHTML;
+    // // 准备对象
+    // var data = {
+    //     name:'杨幂',
+    //     age:'大'
+    // };
+    // // 替换内容
+    // var reg = /{{(\w+)}}/;
+    // // 检索str满足条件的部分
+    // var result = reg.exec(str);
+    // //  替换result[1]的内容
+    // // data[result[1]] 通过正则表达式查找data中内容，[0]的话会从开头为{{的字符串开始匹配，所以返回值回事false，
+    // // [1]则是指从真则表达式中的（）开始匹配值至少一个英文单词
+    // str = str.replace(result[0],data[result[1]]);
+    //  console.log(str);
+    // //  再次替换
+    // var result = reg.exec(str);
+    // str = str.replace(result[0],data[result[1]]);
+    //  console.log(str);
+
+    // 使用while循环替换
+        // // 准备数据对象
+    //     var data = {
+    //         name:'关之琳',
+    //         age:'高尔夫球'
+    //     };
+    // //  字符串
+    //     var str = document.querySelector('#template').innerHTML;
+    // // 定义正则表达式
+    //     var reg = /{{(\w+)}}/;
+    // // 循环替换
+    // var result = reg.exec(str);
+    //     while(result){
+    //         str = str.replace(result[0],data[result[1]]);
+    //         result = reg.exec(str);
+    //     }
+    // // 获取结果
+        //  console.log(str);
+        var data = {
+            name:'冰冰',
+            age:'骑马'
+        };
+        var strResult = my_template('template',data);
+         console.log(strResult);
+     </script>
